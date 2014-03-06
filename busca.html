@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GMaps.js &mdash; Geolocation</title>
+  <script type="text/javascript" src="zepto.min.js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="gmaps.js"></script>
+  <link rel="stylesheet" type="text/css" href="mypath.css" />
+  <script type="text/javascript">
+    var map, lat, lng, lat_car, lng_car, cotxe;
+
+    $(function(){
+
+      /*
+       *  Gelocalizar: Carrega un mapa am
+       */
+
+      function geolocalizar(){
+        GMaps.geolocate({
+          success: function(position){
+
+              // Extraiem coordenades actuals
+              lat = position.coords.latitude;  
+              lng = position.coords.longitude;
+              
+              // Carrega la posició del cotxe
+              lat_car = (localStorage.lat_car || "" ); 
+              if (lat_car) lat_car = JSON.parse(lat_car) ;
+
+              lng_car = (localStorage.lng_car || "" ); 
+              if (lng_car) lng_car = JSON.parse(lng_car) ;
+
+              map = new GMaps({  // muestra mapa centrado en coords [lat, lng]
+                el: '#map',
+                lat: lat,
+                lng: lng,
+              });
+
+              // Afegeix marcador del cotxe. Es recuperen les coordenades guardades anteriorment
+              map.addMarker({ 
+                lat: lat_car,
+                lng: lng_car,
+                title: '',
+                infoWindow: {
+                  content: '<p>El teu cotxe!</p>'
+                }
+              });
+
+              // Dibuixa ruta caminant des del teu punt actual fins al cotxe
+              map.drawRoute({
+                origin: [lat,lng],
+                destination: [lat_car, lng_car],
+                travelMode: 'walking',
+                strokeColor: '#131540',
+                strokeOpacity: 0.6,
+                strokeWeight: 6
+              });
+
+
+          },
+          error: function(error) { alert('Error en la geolocalización: '+error.message); },
+          not_supported: function(){ alert("Su navegador no soporta geolocalización"); },
+        });
+      };
+
+      geolocalizar();
+    });
+  </script>
+</head>
+<body>
+  <div id="map"></div>
+</body>
+</html>
