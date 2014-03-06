@@ -8,17 +8,19 @@
   <script type="text/javascript" src="gmaps.js"></script>
   <link rel="stylesheet" type="text/css" href="mypath.css" />
   <script type="text/javascript">
-    var map, lat, lng, lat_car, lng_car, cotxe;
+    var map, lat, lng, lat_car, lng_car, cotxe, laultima, lnultima;
 
     $(function(){
-
-
 
       /* 
        * aparcaCotxe: 
        */
       function aparcaCotxe(e) {
 
+        // Esborra marques anteriors
+        map.removeMarkers();
+
+        // Marca i guarda l'aparcament actual
         lat_car = e.latLng.lat();   // guarda coords para marca siguiente
         lng_car = e.latLng.lng();
 
