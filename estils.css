@@ -1,0 +1,12 @@
+body{
+  font-family: 'Droid Sans', 'Helvetica', Arial, sans-serif;
+}
+
+div{
+	width: 100px;
+	margin: auto;
+}
+
+.boto {
+	width: 70px;
+}
